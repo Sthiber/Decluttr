@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 decluttr-env/
 *.env/
+/build/
+/dist/
+*.spec
+.DS_Store
