@@ -1,7 +1,6 @@
 import tkinter as tk
 import ttkbootstrap as ttk
 import os
-import shutil
 from tkinter import Tk
 from tkinter import filedialog
 from tkinter import messagebox
@@ -105,7 +104,7 @@ class FileCleanerApp:
                 os.rmdir(target_folder)
             except OSError:
                 pass
-            
+
             messagebox.showinfo("Done","No files matched the selected types.")
         else:
             messagebox.showinfo("Cleaning Complete", f"Successfully moved {moved_count} file(s) to {folder_name}")
