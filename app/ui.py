@@ -1,11 +1,9 @@
 import tkinter as tk
 import os
+import shutil
 from tkinter import Tk
 from tkinter import filedialog
 from tkinter import messagebox
-
-
-
 
 class FileCleanerApp:
 
@@ -71,10 +69,33 @@ class FileCleanerApp:
 
         if not folder_name:
             messagebox.showerror(title="No Folder Name", message="Please input the name of the folder you want to extract to")
+        
+        
+        summary = (f"Are you sure you want to clean this directory?\n\n"
+                   f"Directory: {directory}\n"
+                   f"File Types: {','.join(selected_types)}\n"
+                   f"Destination Folder: {folder_name}")
+        confirm = messagebox.askyesno("Confirm Cleanup", summary)
+
+        if not confirm:
+            return
 
         target_folder = os.path.join(directory, folder_name)
-        os.mkdir(target_folder, exist_ok=True)
+        os.makedirs(target_folder, exist_ok=True)
+
+        if os.path.exists(target_folder):
+            proceed = messagebox.askyesno("Folder Already Exists!", f"The folder {folder_name} already exists in the directory. \n\n Do you want to continue and move files into it?")
         
+        if not proceed:
+            return
+
+        for file in os.listdir(directory):
+            full_path = os.path.join(directory, file)
+            if os.path.isfile(full_path) and any(file.endswith(ext) for ext in selected_types):
+                shutil.move(full_path, os.path.join(target_folder, file))
+
+
+
 
 
         
