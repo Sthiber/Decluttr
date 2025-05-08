@@ -1,10 +1,11 @@
 import tkinter as tk
+import ttkbootstrap as ttk
 import os
 import shutil
 from tkinter import Tk
 from tkinter import filedialog
 from tkinter import messagebox
-# from ttkbootstrap import Style
+from ttkbootstrap import Style
 
 class FileCleanerApp:
 
@@ -12,20 +13,20 @@ class FileCleanerApp:
         self.root = root
         self.root.title('Decluttr')
         self.root.geometry("500x500")
-        # self.style = Style(theme='superhero')
+        self.style = Style(theme='superhero')
 
-        self.welcome_label = tk.Label(root, text="Welcome to Decluttr")
+        self.welcome_label = ttk.Label(root, text="Welcome to Decluttr", font=("Roboto", 36, "bold") ,bootstyle="info")
         self.welcome_label.pack(pady=10)
 
-        self.initial_label = tk.Label(root, text="Please select the directory you want to clean")
+        self.initial_label = tk.Label(root, text="Please select the directory you want to clean", font=("Robot", 14, "bold"))
         self.initial_label.pack(pady=10)
 
-        self.browse_directory_button = tk.Button(root, text="Browse", command=self.browse_directory)
+        self.browse_directory_button = ttk.Button(root, text="Browse", command=self.browse_directory, bootstyle='info')
         self.browse_directory_button.pack(pady=5)
 
         self.selected_directory = ""
 
-        self.directory_label = tk.Label(root, text="No directory selected")
+        self.directory_label = tk.Label(root, text="No directory selected", font=("Robot", 14, "bold"))
         self.directory_label.pack(pady=10)
 
         self.file_types = [".pdf", ".jpg", ".txt", ".png", ".sql", ".mp4", ".zip", ".py"]
@@ -41,12 +42,12 @@ class FileCleanerApp:
             cb.grid(row=i // columns, column=i % columns, padx=10, pady=5, sticky="w")
             self.check_vars[ext] = var
         
-        self.new_folder_label = tk.Label(root, text="Enter the directory name to send selected files to:")
+        self.new_folder_label = tk.Label(root, text="Enter the directory name to send selected files to:", font=("Robot", 14, "bold"))
         self.new_folder_label.pack(pady=5)
         self.folder_name_entry = tk.Entry(root)
         self.folder_name_entry.pack(pady=5)
 
-        self.start_button = tk.Button(root, text="Start Cleaning", command=self.start_cleaning)
+        self.start_button = ttk.Button(root, text="Start Cleaning", command=self.start_cleaning, bootstyle='success')
         self.start_button.pack(pady=10)
 
 
@@ -55,7 +56,7 @@ class FileCleanerApp:
         directory_path = filedialog.askdirectory()
         if directory_path:
             self.selected_directory = directory_path
-            self.directory_label.config(text="Selected: "  + self.selected_directory)
+            self.directory_label.config(text="Selected: "  + self.selected_directory, font=("Robot", 14, "bold"))
 
     def start_cleaning(self):
         directory = self.selected_directory
