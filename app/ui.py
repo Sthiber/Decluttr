@@ -18,7 +18,7 @@ class FileCleanerApp:
         self.welcome_label = ttk.Label(root, text="Welcome to Decluttr", font=("Roboto", 36, "bold") ,bootstyle="info")
         self.welcome_label.pack(pady=10)
 
-        self.initial_label = tk.Label(root, text="Please select the directory you want to clean", font=("Robot", 14, "bold"))
+        self.initial_label = ttk.Label(root, text="Please select the directory you want to clean", font=("Roboto", 14), bootstyle="info")
         self.initial_label.pack(pady=10)
 
         self.browse_directory_button = ttk.Button(root, text="Browse", command=self.browse_directory, bootstyle='info')
@@ -26,24 +26,24 @@ class FileCleanerApp:
 
         self.selected_directory = ""
 
-        self.directory_label = tk.Label(root, text="No directory selected", font=("Robot", 14, "bold"))
+        self.directory_label = ttk.Label(root, text="No directory selected", font=("Roboto", 14, "bold"), bootstyle="secondary")
         self.directory_label.pack(pady=10)
 
         self.file_types = [".pdf", ".jpg", ".txt", ".png", ".sql", ".mp4", ".zip", ".py"]
         self.check_vars = {}
 
-        checkbox_frame = tk.Frame(root)
-        checkbox_frame.pack(pady=10)
+        checkbox_frame = ttk.Labelframe(root, text="Select file types", bootstyle="info")
+        checkbox_frame.pack(pady=10, padx=10)
 
         columns = 4  
         for i, ext in enumerate(self.file_types):
-            var = tk.BooleanVar()
-            cb = tk.Checkbutton(checkbox_frame, text=ext, variable=var)
+            var = ttk.BooleanVar()
+            cb = ttk.Checkbutton(checkbox_frame, text=ext,variable=var, bootstyle="success")
             cb.grid(row=i // columns, column=i % columns, padx=10, pady=5, sticky="w")
             self.check_vars[ext] = var
         
-        self.new_folder_label = tk.Label(root, text="Enter the directory name to send selected files to:", font=("Robot", 14, "bold"))
-        self.new_folder_label.pack(pady=5)
+        self.new_folder_label = ttk.Label(root, text="Enter the directory name to send selected files to:", font=("Roboto", 14), bootstyle="info")
+        self.new_folder_label.pack(pady=10)
         self.folder_name_entry = tk.Entry(root)
         self.folder_name_entry.pack(pady=5)
 
