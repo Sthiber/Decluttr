@@ -5,7 +5,9 @@ import shutil
 from tkinter import Tk
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter import PhotoImage
 from ttkbootstrap import Style
+from app.file_sorter import move_files_by_type
 
 class FileCleanerApp:
 
@@ -14,6 +16,9 @@ class FileCleanerApp:
         self.root.title('Decluttr')
         self.root.geometry("500x500")
         self.style = Style(theme='superhero')
+        icon_path = "assets/decluttr.png"
+        icon_image = PhotoImage(file=icon_path)
+        self.root.iconphoto(True, icon_image)
 
         self.welcome_label = ttk.Label(root, text="Welcome to Decluttr", font=("Roboto", 36, "bold") ,bootstyle="info")
         self.welcome_label.pack(pady=10)
@@ -56,7 +61,7 @@ class FileCleanerApp:
         directory_path = filedialog.askdirectory()
         if directory_path:
             self.selected_directory = directory_path
-            self.directory_label.config(text="Selected: "  + self.selected_directory, font=("Robot", 14, "bold"))
+            self.directory_label.config(text="Selected: "  + self.selected_directory, font=("Roboto", 14, "bold"))
 
     def start_cleaning(self):
         directory = self.selected_directory
@@ -90,20 +95,16 @@ class FileCleanerApp:
         if os.path.exists(target_folder):
             proceed = messagebox.askyesno("Folder Already Exists!", f"The folder {folder_name} already exists in the directory. \n\n Do you want to continue and move files into it?")
         
-        if not proceed:
-            return
+            if not proceed:
+                return
         
-        os.makedirs(target_folder, exist_ok=True)
+        moved_count = move_files_by_type(directory, selected_types, folder_name)
 
-        moved_count = 0
+        if moved_count == 0:
+            messagebox.showinfo("Done","No files matched the selected types.")
+        else:
+            messagebox.showinfo("Cleaning Complete", f"Successfully moved {moved_count} file(s) to {folder_name}")
 
-        for file in os.listdir(directory):
-            full_path = os.path.join(directory, file)
-            if os.path.isfile(full_path) and any(file.endswith(ext) for ext in selected_types):
-                shutil.move(full_path, os.path.join(target_folder, file))
-                moved_count += 1
-
-        messagebox.showinfo("Cleaning Complete", f"Successfully moved {moved_count} file(s) to {folder_name}")
         for var in self.check_vars.values():
             var.set(False)
         
