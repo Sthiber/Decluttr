@@ -4,14 +4,15 @@ import shutil
 from tkinter import Tk
 from tkinter import filedialog
 from tkinter import messagebox
+# from ttkbootstrap import Style
 
 class FileCleanerApp:
 
     def __init__(self, root : Tk):
         self.root = root
         self.root.title('Decluttr')
-
         self.root.geometry("500x500")
+        # self.style = Style(theme='superhero')
 
         self.welcome_label = tk.Label(root, text="Welcome to Decluttr")
         self.welcome_label.pack(pady=10)
@@ -63,12 +64,15 @@ class FileCleanerApp:
 
         if not directory:
             messagebox.showerror(title="No Selected Directory", message="No directory selected to clean")
+            return
         
         if len(selected_types) == 0:
             messagebox.showerror(title="No Selected File Types", message="Please select atleast one file type to extract!")
+            return 
 
         if not folder_name:
             messagebox.showerror(title="No Folder Name", message="Please input the name of the folder you want to extract to")
+            return
         
         
         summary = (f"Are you sure you want to clean this directory?\n\n"
@@ -81,18 +85,28 @@ class FileCleanerApp:
             return
 
         target_folder = os.path.join(directory, folder_name)
-        os.makedirs(target_folder, exist_ok=True)
 
         if os.path.exists(target_folder):
             proceed = messagebox.askyesno("Folder Already Exists!", f"The folder {folder_name} already exists in the directory. \n\n Do you want to continue and move files into it?")
         
         if not proceed:
             return
+        
+        os.makedirs(target_folder, exist_ok=True)
+
+        moved_count = 0
 
         for file in os.listdir(directory):
             full_path = os.path.join(directory, file)
             if os.path.isfile(full_path) and any(file.endswith(ext) for ext in selected_types):
                 shutil.move(full_path, os.path.join(target_folder, file))
+                moved_count += 1
+
+        messagebox.showinfo("Cleaning Complete", f"Successfully moved {moved_count} file(s) to {folder_name}")
+        for var in self.check_vars.values():
+            var.set(False)
+        
+        self.folder_name_entry.delete(0, tk.END)
 
 
 
