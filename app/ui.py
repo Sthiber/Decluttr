@@ -26,6 +26,19 @@ class FileCleanerApp:
         self.directory_label = tk.Label(root, text="No directory selected")
         self.directory_label.pack(pady=10)
 
+        self.file_types = [".pdf", ".jpg", ".txt", ".png", ".sql", ".mp4", ".zip"]
+        self.check_vars = {}
+
+        checkbox_frame = tk.Frame(root)
+        checkbox_frame.pack(pady=10)
+
+        columns = 4  # Number of columns per row
+        for i, ext in enumerate(self.file_types):
+            var = tk.BooleanVar()
+            cb = tk.Checkbutton(checkbox_frame, text=ext, variable=var)
+            cb.grid(row=i // columns, column=i % columns, padx=10, pady=5, sticky="w")
+            self.check_vars[ext] = var
+
 
     
     def browse_directory(self):
