@@ -101,6 +101,11 @@ class FileCleanerApp:
         moved_count = move_files_by_type(directory, selected_types, folder_name)
 
         if moved_count == 0:
+            try:
+                os.rmdir(target_folder)
+            except OSError:
+                pass
+            
             messagebox.showinfo("Done","No files matched the selected types.")
         else:
             messagebox.showinfo("Cleaning Complete", f"Successfully moved {moved_count} file(s) to {folder_name}")
