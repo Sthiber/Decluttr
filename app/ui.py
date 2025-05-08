@@ -23,13 +23,17 @@ class FileCleanerApp:
 
         self.selected_directory = ""
 
-        
+        self.directory_label = tk.Label(root, text="No directory selected")
+        self.directory_label.pack(pady=10)
+
+
     
     def browse_directory(self):
         directory_path = filedialog.askdirectory()
         if directory_path:
             self.selected_directory = directory_path
-            print('The selected directory is: ', directory_path)
+            self.directory_label.config(text="Selected: "  + self.selected_directory)
+
 
 
 
