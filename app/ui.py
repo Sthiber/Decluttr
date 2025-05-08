@@ -1,6 +1,7 @@
 import tkinter as tk
 import ttkbootstrap as ttk
 import os
+import sys
 from tkinter import Tk
 from tkinter import filedialog
 from tkinter import messagebox
@@ -15,7 +16,8 @@ class FileCleanerApp:
         self.root.title('Decluttr')
         self.root.geometry("500x500")
         self.style = Style(theme='superhero')
-        icon_path = "assets/decluttr.png"
+        base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+        icon_path = os.path.join(base_path, "assets", "decluttr.png")
         icon_image = PhotoImage(file=icon_path)
         self.root.iconphoto(True, icon_image)
 
